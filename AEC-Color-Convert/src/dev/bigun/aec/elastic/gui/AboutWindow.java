@@ -49,7 +49,7 @@ public class AboutWindow {
 		panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		dialog.add(panel);
 
-		JLabel label1 = new JLabel("Elastic Color Convert - Version 1.2.3 (22.05.20)");
+		JLabel label1 = new JLabel("Elastic Color Convert - Version 1.2.4 (22.05.20)");
 		label1.setAlignmentX(Component.CENTER_ALIGNMENT);
 		JLabel label2 = new JLabel("Copyright (c) 2022 Evan");
 		label2.setAlignmentX(Component.CENTER_ALIGNMENT);
