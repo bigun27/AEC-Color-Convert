@@ -1,0 +1,10 @@
+This product is NOT distrubited with Java (JDK/JRE/etc) nor any 3rd party libraries.
+Those products must be accuried, and licenses agreed to, by the end user on their own behalf.
+The license of this software does not affect, extend, or otherwise influence the licenses of any required 3rd party products.
+
+OpenJDK version 17 is currently recommended, it can be downloaded from https://jdk.java.net/archive/
+The source is compiled for Java 11.
+
+The .exe executable available in the releases is a wrapped version of the .jar using launch4j.
+The Java Runtime Enviroment can be provided in the ./jre directory or, as a fallback, will use the system-installed version.
+At least two directories need to be copied into the ./jre directory (bin and lib) in order for the executable to run with the given JRE.
