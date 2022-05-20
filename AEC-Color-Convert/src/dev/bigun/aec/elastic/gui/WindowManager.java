@@ -14,9 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 import javax.swing.BorderFactory;
@@ -73,7 +70,7 @@ public class WindowManager implements ActionListener {
 	 *
 	 * @throws FileNotFoundException if the error file cannot be written
 	 */
-	public WindowManager() throws FileNotFoundException {
+	public WindowManager() {
 
 		Properties prop = new Properties();
 		try (InputStream input = new FileInputStream(ColorManager.getPropFile())) {
@@ -87,17 +84,13 @@ public class WindowManager implements ActionListener {
 			ColorManager.setConvertToSpace(Boolean.parseBoolean(prop.getProperty("convertToSpace")));
 			ColorManager.setBypassErrorCheck(Boolean.parseBoolean(prop.getProperty("bypassErrorCheck")));
 		} catch (Exception e) {
-			String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-			PrintWriter writer = new PrintWriter("error/error" + formattedDate + ".txt");
-			writer.write("Cannot find properties file or there are errors.");
-			writer.close();
 			JOptionPane.showMessageDialog(new JFrame(),
 					"Cannot find properties file or there are errors. "
 							+ "Please fix them in the properties file or settings menu.",
 					"Warning", JOptionPane.ERROR_MESSAGE);
 			invalidProp = true;
 		}
-		
+
 		if (invalidProp) {
 			errorFlag = true;
 			new SettingsWindow();

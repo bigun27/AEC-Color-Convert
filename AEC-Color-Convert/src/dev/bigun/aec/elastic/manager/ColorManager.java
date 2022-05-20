@@ -153,47 +153,51 @@ public class ColorManager {
 	 * @throws NullPointerException     if any required properties are not given
 	 * @throws IllegalArgumentException if there is an unexpected issue
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
+		try {
+			if (args.length == 1 && "--gui".equals(args[0])) {
+				gui = true;
+				new WindowManager();
+			} else {
+				Properties prop = new Properties();
+				try (InputStream input = new FileInputStream(PROP_FILE)) {
+					prop.load(input);
+					inputPath = prop.getProperty("input");
+					outputPath = prop.getProperty("output");
+					errorPath = prop.getProperty("error");
+					notes = Boolean.parseBoolean(prop.getProperty("notes"));
+					header = Boolean.parseBoolean(prop.getProperty("header"));
+					empty = Boolean.parseBoolean(prop.getProperty("empty"));
+					convertToSpace = Boolean.parseBoolean(prop.getProperty("convertToSpace"));
+					bypassErrorCheck = Boolean.parseBoolean(prop.getProperty("bypassErrorCheck"));
+				} catch (IOException | NullPointerException e) {
+					String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+					PrintWriter writer = new PrintWriter("error/error" + formattedDate + ".txt");
+					writer.write("Cannot find properties file or there are errors.");
+					writer.close();
+					throw new IllegalArgumentException("Cannot find properties file or there are errors.");
+				}
+				System.out.println("Welcome to Elastic Color Convert\n");
+				System.out.println("Starting to read from file. This should only take a moment.");
+				colorArray = Reader.readInputAsArray(inputPath);
 
-		if (args.length == 1 && "--gui".equals(args[0])) {
-			gui = true;
-			new WindowManager();
-		} else {
-			Properties prop = new Properties();
-			try (InputStream input = new FileInputStream(PROP_FILE)) {
-				prop.load(input);
-				inputPath = prop.getProperty("input");
-				outputPath = prop.getProperty("output");
-				errorPath = prop.getProperty("error");
-				notes = Boolean.parseBoolean(prop.getProperty("notes"));
-				header = Boolean.parseBoolean(prop.getProperty("header"));
-				empty = Boolean.parseBoolean(prop.getProperty("empty"));
-				convertToSpace = Boolean.parseBoolean(prop.getProperty("convertToSpace"));
-				bypassErrorCheck = Boolean.parseBoolean(prop.getProperty("bypassErrorCheck"));
-			} catch (IOException | NullPointerException e) {
-				String formattedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-				PrintWriter writer = new PrintWriter("error/error" + formattedDate + ".txt");
-				writer.write("Cannot find properties file or there are errors.");
-				writer.close();
-				throw new IllegalArgumentException("Cannot find properties file or there are errors.");
+				// for (int i = 0; i < Reader.getIndex(); i++) {
+				// if (colorArray[i] != null) {
+				// if (empty.equals("1") && colorArray[i].isEmpty()) {
+				// System.out.println("Found one! " + (i + 1));
+				// continue;
+				// }
+				// System.out.println(colorArray[i].toCSV());
+				// }
+				// }
+
+				System.out.println("Reading was a success. Writing to output.");
+				Writer.writeColorsToFile(colorArray, outputPath);
+				System.out.println("Complete success. Closing program.");
 			}
-			System.out.println("Welcome to Elastic Color Convert\n");
-			System.out.println("Starting to read from file. This should only take a moment.");
-			colorArray = Reader.readInputAsArray(inputPath);
-
-			// for (int i = 0; i < Reader.getIndex(); i++) {
-			// if (colorArray[i] != null) {
-			// if (empty.equals("1") && colorArray[i].isEmpty()) {
-			// System.out.println("Found one! " + (i + 1));
-			// continue;
-			// }
-			// System.out.println(colorArray[i].toCSV());
-			// }
-			// }
-
-			System.out.println("Reading was a success. Writing to output.");
-			Writer.writeColorsToFile(colorArray, outputPath);
-			System.out.println("Complete success. Closing program.");
+		} catch (IOException e) {
+			System.out.println("There was an unrecoverable file-related error");
+			return;
 		}
 	}
 
