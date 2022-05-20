@@ -1,5 +1,5 @@
-# AEC-Elastic-Color-Convert
-This is the source release of the AEC Elastic Color Convert program, version 1.2.1.
+# AEC-Color-Convert
+This is the source release of the AEC Color Convert program, version 1.2.2.
 
 ## What is this?
 I created the base of this project as a one-off program for a company to convert their Color database into a CSV file.
